@@ -1,0 +1,22 @@
+client: Rolex LCU
+gserv_url: gserv.rolex.ap
+gserv2_url: gserv2.rolex.ap
+snode01_url: snode01.rolex.ap
+snode02_url: snode02.rolex.ap
+vault_url: vault.rolex.ap
+cnode_url: cnode01.rolex.ap
+key_and_crt: rolex.ap
+key_path: /etc/httpd/certs/rolex.ap.key
+crt_path: /etc/httpd/certs/rolex.ap.crt
+backoffice_url: portal.rolex.ap
+db:
+   - dpip: 99.79.79.197
+users:
+  - name: bkhute
+    comment: Bhikesh Khute
+    groups: wheel,phpadm
+    password: bhikesh
+  - name: pmakungu
+    comment: Pancras M
+    groups: wheel,phpadm
+    password: pancras

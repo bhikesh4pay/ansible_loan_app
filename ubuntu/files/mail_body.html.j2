@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+<body>
+
+<h2>This is an automated generated email from the Platform Team.</h2>
+
+<table style="width:52%">
+  <tr>
+    <th>Client</th>
+    <td>{{ client }}</td>
+  </tr>
+  <tr>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+    <th>Operating System</th>
+    <td>{{ ansible_distribution }}</td>
+  </tr>
+  <tr>
+        <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <th style="width:50%">Application URLs</th>
+    <td>{{ ansible_host }} {{ gserv_url }} </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td> {{ ansible_host }} {{ gserv2_url }} </td>
+  </tr>
+  <tr>
+	<td></td>
+	<td> {{ ansible_host }} {{ snode01_url }} </td>
+  </tr>
+  <tr>
+	<td></td>
+	<td> {{ ansible_host }} {{ snode02_url }} </td>
+  </tr>
+  <tr>
+	<td></td>
+	<td> {{ ansible_host }} {{ vault_url }} </td>
+  </tr>
+  <tr>
+	<td></td>
+	<td> {{ ansible_host }} {{ cnode_url }} </td>
+  </tr>
+  <tr>
+	<td></td>
+	<td> {{ ansible_host }} {{ backoffice_url }} </td>
+  </tr>
+  <tr>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+    <th>SFTP details for Kuunda</th>
+    <td>username: svc_kuunda</td>
+	<tr>
+	<td></td>
+	<td>password: {% for item in users %} {% if item.name == 'svc_kuunda' %}{{ item.password }}{% endif %}{% endfor %}</td>
+    </tr>
+  </tr>
+  <tr>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+	<th>Backoffice Portal Credentials</th>
+	<td>URL: https://{{ backoffice_url }}/snode/login.php</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>username: blackberry/loanuser</td>
+  </tr>
+  <tr>
+    <td></td>	
+    <td>password: blackberry/Rolex@123</td>
+  </tr>
+  <tr>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+    <th>Database</th>
+    <td> {% for item in db %} {{ item.dbip }} {% endfor %}</td>
+  </tr>
+  <tr>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+    <th>API Credentials</th>
+    <td>URL: https://{{ iserv_url }}/ProcessTransaction4</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>partnerid: CHINAKILL</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>authKey:{{ partner_key }}</td>
+  </tr>
+  <tr>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+	<th>Platform Engineer</th>
+	<td>Bhikesh</td>
+  </tr>
+</table>
+<h2>Signed by - Ansible Automation Tool</h2>
+
+</body>
+</html>
+
+

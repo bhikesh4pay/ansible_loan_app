@@ -1,0 +1,347 @@
+<VirtualHost *:443>
+
+# General setup for the virtual host, inherited from global configuration
+DocumentRoot "/var/www/cloudabm.com/gserv/cake/app/webroot"
+ServerName {{ gserv_url }}:443
+ServerAdmin admin@4pay.ca
+
+<Directory "/var/www/cloudabm.com/gserv/cake/app/webroot">
+    SSLOptions +StdEnvVars
+    Options -Indexes +FollowSymLinks +Includes +ExecCGI
+    AllowOverride All
+    Require all granted
+    <LimitExcept GET POST>
+        Require all denied
+    </LimitExcept>
+</Directory>
+
+# Use separate log files for the SSL virtual host; note that LogLevel
+# is not inherited from httpd.conf.
+ErrorLog ${APACHE_LOG_DIR}/gserv-cloudabm_ssl_error_log
+TransferLog ${APACHE_LOG_DIR}/gserv-cloudabm_ssl_access_log
+LogLevel warn
+
+#   SSL Engine Switch:
+#   Enable/Disable SSL for this virtual host.
+SSLEngine on
+
+#   Server Certificate:
+SSLCertificateFile "{{ crt_path }}"
+
+#   Server Private Key:
+SSLCertificateKeyFile "{{ key_path }}"
+
+#   Server Certificate Chain:
+#SSLCertificateChainFile "/etc/apache2/certs/gd_bundle-g2-g1.crt"
+#SSLCertificateChainFile "/etc/apache2/certs/root.pem"
+
+#   SSL Engine Options:
+<Files ~ "\.(cgi|shtml|phtml|php3?)$">
+    SSLOptions +StdEnvVars
+</Files>
+<Directory "/var/www/cgi-bin">
+    SSLOptions +StdEnvVars
+</Directory>
+
+#   SSL Protocol Adjustments:
+BrowserMatch "MSIE [2-5]" \
+         nokeepalive ssl-unclean-shutdown \
+         downgrade-1.0 force-response-1.0
+
+#   Per-Server Logging:
+#   The home of a custom SSL log file. Use this when you want a
+#   compact non-error SSL logfile on a virtual host basis.
+CustomLog ${APACHE_LOG_DIR}/gserv-cloudabm_ssl_request_log \
+          "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+
+</VirtualHost>                                  
+
+<VirtualHost *:443>
+
+# General setup for the virtual host, inherited from global configuration
+DocumentRoot "/var/www/cloudabm.com/gserv2/cake/app/webroot"
+ServerName {{ gserv2_url }}:443
+ServerAdmin admin@4pay.ca
+
+<Directory "/var/www/cloudabm.com/gserv2/cake/app/webroot">
+    SSLOptions +StdEnvVars
+    Options -Indexes +FollowSymLinks +Includes +ExecCGI
+    AllowOverride All
+    Require all granted
+    <LimitExcept GET POST>
+        Require all denied
+    </LimitExcept>
+</Directory>
+
+# Use separate log files for the SSL virtual host; note that LogLevel
+# is not inherited from httpd.conf.
+ErrorLog ${APACHE_LOG_DIR}/gserv2-cloudabm_ssl_error_log
+TransferLog ${APACHE_LOG_DIR}/gserv2-cloudabm_ssl_access_log
+LogLevel warn
+
+#   SSL Engine Switch:
+#   Enable/Disable SSL for this virtual host.
+SSLEngine on
+
+#   Server Certificate:
+SSLCertificateFile "{{ crt_path }}"
+
+#   Server Private Key:
+SSLCertificateKeyFile "{{ key_path }}"
+
+#   Server Certificate Chain:
+#SSLCertificateChainFile "/etc/apache2/certs/gd_bundle-g2-g1.crt"
+#SSLCertificateChainFile "/etc/apache2/certs/root.pem"
+
+#   SSL Engine Options:
+<Files ~ "\.(cgi|shtml|phtml|php3?)$">
+    SSLOptions +StdEnvVars
+</Files>
+<Directory "/var/www/cgi-bin">
+    SSLOptions +StdEnvVars
+</Directory>
+
+#   SSL Protocol Adjustments:
+BrowserMatch "MSIE [2-5]" \
+         nokeepalive ssl-unclean-shutdown \
+         downgrade-1.0 force-response-1.0
+
+#   Per-Server Logging:
+#   The home of a custom SSL log file. Use this when you want a
+#   compact non-error SSL logfile on a virtual host basis.
+CustomLog ${APACHE_LOG_DIR}/gserv2-cloudabm_ssl_request_log \
+          "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+
+</VirtualHost>                                  
+
+<VirtualHost *:443>
+
+# General setup for the virtual host, inherited from global configuration
+DocumentRoot "/var/www/cloudabm.com/snode01/cake/app/webroot"
+ServerName {{ snode01_url }}:443
+ServerAdmin admin@4pay.ca
+
+<Directory "/var/www/cloudabm.com/snode01/cake/app/webroot">
+    SSLOptions +StdEnvVars
+    Options -Indexes +FollowSymLinks +Includes +ExecCGI
+    AllowOverride All
+    Require all granted
+    <LimitExcept GET POST>
+        Require all denied
+    </LimitExcept>
+</Directory>
+
+# Use separate log files for the SSL virtual host; note that LogLevel
+# is not inherited from httpd.conf.
+ErrorLog ${APACHE_LOG_DIR}/snode01-cloudabm_ssl_error_log
+TransferLog ${APACHE_LOG_DIR}/snode01-cloudabm_ssl_access_log
+LogLevel warn
+
+#   SSL Engine Switch:
+#   Enable/Disable SSL for this virtual host.
+SSLEngine on
+
+#   Server Certificate:
+SSLCertificateFile "{{ crt_path }}"
+
+#   Server Private Key:
+SSLCertificateKeyFile "{{ key_path }}"
+
+#   Server Certificate Chain:
+#SSLCertificateChainFile "/etc/apache2/certs/gd_bundle-g2-g1.crt"
+#SSLCertificateChainFile "/etc/apache2/certs/root.pem"
+
+#   SSL Engine Options:
+<Files ~ "\.(cgi|shtml|phtml|php3?)$">
+    SSLOptions +StdEnvVars
+</Files>
+<Directory "/var/www/cgi-bin">
+    SSLOptions +StdEnvVars
+</Directory>
+
+#   SSL Protocol Adjustments:
+BrowserMatch "MSIE [2-5]" \
+         nokeepalive ssl-unclean-shutdown \
+         downgrade-1.0 force-response-1.0
+
+#   Per-Server Logging:
+#   The home of a custom SSL log file. Use this when you want a
+#   compact non-error SSL logfile on a virtual host basis.
+CustomLog ${APACHE_LOG_DIR}/snode01-cloudabm_ssl_request_log \
+          "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+
+</VirtualHost>                                  
+
+<VirtualHost *:443>
+
+# General setup for the virtual host, inherited from global configuration
+DocumentRoot "/var/www/cloudabm.com/snode02/cake/app/webroot"
+ServerName {{ snode02_url }}:443
+ServerAdmin admin@4pay.ca
+
+<Directory "/var/www/cloudabm.com/snode02/cake/app/webroot">
+    SSLOptions +StdEnvVars
+    Options -Indexes +FollowSymLinks +Includes +ExecCGI
+    AllowOverride All
+    Require all granted
+    <LimitExcept GET POST>
+        Require all denied
+    </LimitExcept>
+</Directory>
+
+# Use separate log files for the SSL virtual host; note that LogLevel
+# is not inherited from httpd.conf.
+ErrorLog ${APACHE_LOG_DIR}/snode02-cloudabm_ssl_error_log
+TransferLog ${APACHE_LOG_DIR}/snode02-cloudabm_ssl_access_log
+LogLevel warn
+
+#   SSL Engine Switch:
+#   Enable/Disable SSL for this virtual host.
+SSLEngine on
+
+#   Server Certificate:
+SSLCertificateFile "{{ crt_path }}"
+
+#   Server Private Key:
+SSLCertificateKeyFile "{{ key_path }}"
+
+#   Server Certificate Chain:
+#SSLCertificateChainFile "/etc/apache2/certs/gd_bundle-g2-g1.crt"
+#SSLCertificateChainFile "/etc/apache2/certs/root.pem"
+
+#   SSL Engine Options:
+<Files ~ "\.(cgi|shtml|phtml|php3?)$">
+    SSLOptions +StdEnvVars
+</Files>
+<Directory "/var/www/cgi-bin">
+    SSLOptions +StdEnvVars
+</Directory>
+
+#   SSL Protocol Adjustments:
+BrowserMatch "MSIE [2-5]" \
+         nokeepalive ssl-unclean-shutdown \
+         downgrade-1.0 force-response-1.0
+
+#   Per-Server Logging:
+#   The home of a custom SSL log file. Use this when you want a
+#   compact non-error SSL logfile on a virtual host basis.
+CustomLog ${APACHE_LOG_DIR}/snode02-cloudabm_ssl_request_log \
+          "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+
+</VirtualHost>                                  
+
+<VirtualHost *:443>
+
+# General setup for the virtual host, inherited from global configuration
+DocumentRoot "/var/www/cloudabm.com/vault/cake/app/webroot"
+ServerName {{ vault_url }}:443
+ServerAdmin admin@4pay.ca
+
+<Directory "/var/www/cloudabm.com/vault/cake/app/webroot">
+    SSLOptions +StdEnvVars
+    Options -Indexes +FollowSymLinks +Includes +ExecCGI
+    AllowOverride All
+    Require all granted
+    <LimitExcept GET POST>
+        Require all denied
+    </LimitExcept>
+</Directory>
+
+# Use separate log files for the SSL virtual host; note that LogLevel
+# is not inherited from httpd.conf.
+ErrorLog ${APACHE_LOG_DIR}/vault-cloudabm_ssl_error_log
+TransferLog ${APACHE_LOG_DIR}/vault-cloudabm_ssl_access_log
+LogLevel warn
+
+#   SSL Engine Switch:
+#   Enable/Disable SSL for this virtual host.
+SSLEngine on
+
+#   Server Certificate:
+SSLCertificateFile "{{ crt_path }}"
+
+#   Server Private Key:
+SSLCertificateKeyFile "{{ key_path }}"
+
+#   Server Certificate Chain:
+#SSLCertificateChainFile "/etc/apache2/certs/gd_bundle-g2-g1.crt"
+#SSLCertificateChainFile "/etc/apache2/certs/root.pem"
+
+#   SSL Engine Options:
+<Files ~ "\.(cgi|shtml|phtml|php3?)$">
+    SSLOptions +StdEnvVars
+</Files>
+<Directory "/var/www/cgi-bin">
+    SSLOptions +StdEnvVars
+</Directory>
+
+#   SSL Protocol Adjustments:
+BrowserMatch "MSIE [2-5]" \
+         nokeepalive ssl-unclean-shutdown \
+         downgrade-1.0 force-response-1.0
+
+#   Per-Server Logging:
+#   The home of a custom SSL log file. Use this when you want a
+#   compact non-error SSL logfile on a virtual host basis.
+CustomLog ${APACHE_LOG_DIR}/vault-cloudabm_ssl_request_log \
+          "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+
+</VirtualHost>                                  
+
+<VirtualHost *:443>
+
+# General setup for the virtual host, inherited from global configuration
+DocumentRoot "/var/www/cloudabm.com/cnode/cake/app/webroot"
+ServerName {{ cnode_url }}:443
+ServerAdmin admin@4pay.ca
+
+<Directory "/var/www/cloudabm.com/cnode/cake/app/webroot">
+    SSLOptions +StdEnvVars
+    Options -Indexes +FollowSymLinks +Includes +ExecCGI
+    AllowOverride All
+    Require all granted
+    <LimitExcept GET POST>
+        Require all denied
+    </LimitExcept>
+</Directory>
+
+# Use separate log files for the SSL virtual host; note that LogLevel
+# is not inherited from httpd.conf.
+ErrorLog ${APACHE_LOG_DIR}/cnode01-cloudabm_ssl_error_log
+TransferLog ${APACHE_LOG_DIR}/cnode01-cloudabm_ssl_access_log
+LogLevel warn
+
+#   SSL Engine Switch:
+#   Enable/Disable SSL for this virtual host.
+SSLEngine on
+
+#   Server Certificate:
+SSLCertificateFile "{{ crt_path }}"
+
+#   Server Private Key:
+SSLCertificateKeyFile "{{ key_path }}"
+
+#   Server Certificate Chain:
+#SSLCertificateChainFile "/etc/apache2/certs/gd_bundle-g2-g1.crt"
+#SSLCertificateChainFile "/etc/apache2/certs/root.pem"
+
+#   SSL Engine Options:
+<Files ~ "\.(cgi|shtml|phtml|php3?)$">
+    SSLOptions +StdEnvVars
+</Files>
+<Directory "/var/www/cgi-bin">
+    SSLOptions +StdEnvVars
+</Directory>
+
+#   SSL Protocol Adjustments:
+BrowserMatch "MSIE [2-5]" \
+         nokeepalive ssl-unclean-shutdown \
+         downgrade-1.0 force-response-1.0
+
+#   Per-Server Logging:
+#   The home of a custom SSL log file. Use this when you want a
+#   compact non-error SSL logfile on a virtual host basis.
+CustomLog ${APACHE_LOG_DIR}/cnode01-cloudabm_ssl_request_log \
+          "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+
+</VirtualHost>

@@ -1,0 +1,71 @@
+client: Singham 7
+varlocation: /home/ubuntu/APP_BACKOFFICE/ubuntu/vars/vars.yml
+fileslocation: /home/ubuntu/APP_BACKOFFICE/ubuntu/files
+cakelocation: /home/ubuntu/cake.tar.gz
+backofficelocation: /home/ubuntu/backoffice.tar.gz
+slavedestination: /home/centos
+gserv_url: gserv.floor.low
+gserv2_url: gserv2.floor.low
+snode01_url: snode01.floor.low
+snode02_url: snode02.floor.low
+vault_url: vault.floor.low
+cnode_url: cnode01.floor.low
+iserv_url: iserv.floor.low
+key_and_crt: floor.low
+key_path: /etc/httpd/certs/floor.low.key
+crt_path: /etc/httpd/certs/floor.low.crt
+backoffice_url: portal.floor.low
+timezone: Asia/Qatar
+email_pass: elevtywhswobrpoe
+db:
+   - dbip: 3.99.219.101
+     dbpass: falcon^321
+users:
+  - name: bkhute
+    comment: Bhikesh Khute
+    groups: wheel,phpadm
+    password: bhikesh
+  - name: pmakungu
+    comment: Pancras M
+    groups: wheel,phpadm
+    password: pancras
+          
+  - name: rpurohit
+    comment: Rohit Purohit
+    groups: wheel,phpadm
+    password: GvbIzuCi
+
+  - name: ddmello
+    comment: David D
+    groups: wheel,phpadm
+    password: 4TtzcL2q
+
+  - name: ttan
+    comment: Terence Tan
+    groups: wheel,phpadm
+    password: testing321@
+
+  - name: nrooney
+    comment: Nicholas Rooney
+    groups: wheel,phpadm
+    password: manUnited9
+
+  - name: mdamji
+    comment: Mohamed Damji
+    groups: wheel,phpadm
+    password: coloR4pay
+
+  - name: gghatwal
+    comment: Gaurav Ghatwal
+    groups: wheel,phpadm
+    password: dombivliFast
+
+  - name: svc_kuunda
+    comment: SVC Kuunda
+    groups: phpadm,users
+    shell: /sbin/nologin
+    password: djdDNDHSCziXwaNa8L4=
+
+partner_key: RBXtu6RflQ5HFMgu15Q=
+
+host_ip: 3.99.219.101         

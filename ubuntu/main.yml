@@ -1,0 +1,271 @@
+- hosts: slave
+  become: yes
+  vars_files:
+    - /home/ubuntu/APP_BACKOFFICE/ubuntu/vars/vars.yml
+
+  tasks:
+   - name: Install Apache
+     package: name=apache2 state=present
+
+   - name: Add PHP Repo & Update Repo
+     apt_repository:
+      validate_certs: no
+      repo: 'ppa:ondrej/php'
+      state: present
+
+   - name: Update apt repo and cache
+     apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+   - name: Install PHP
+     apt:
+       pkg:
+         - libmcrypt-dev
+         - php7.2
+         - libapache2-mod-php7.2
+         - php7.2-common
+         - php7.2-zip
+         - php7.2-gd
+         - php7.2-xml
+         - php7.2-mbstring
+         - php7.2-mysql
+         - php7.2-curl
+         - php7.2-intl
+         - php7.2-bcmath
+         - php7.2-dev
+         - php7.2-bz2
+       state: present
+       update_cache: yes
+       
+   - name: Copy IonCube to PHP Directory
+     copy:
+      src: "{{ fileslocation }}/ioncube_loader_lin_7.2.so"
+      dest: /usr/lib/php/20170718
+
+   - name: Copying ion config file to PHP Directory
+     copy:
+      src: "{{ fileslocation }}/00-ioncube.ini"
+      dest: /etc/php/7.2/cli/conf.d/
+
+   - name: Verifiying PHP version
+     command: "php -v"
+     register: pout
+
+   - debug: msg= {{ pout.stdout }} 
+
+   - name: Creating certs directory
+     file:
+       path: /etc/apache2/certs
+       state: directory
+
+   - name: Creating Private Key
+     command: "openssl genrsa -out /etc/apache2/certs/{{ key_and_crt }}.key 2048"
+
+   - name: Creating Certificate File
+     command: "openssl req -key /etc/apache2/certs/{{ key_and_crt }}.key -new -x509 -days 365 -subj '/CN=*.{{ key_and_crt }}/O=ITS_4PAY/C=CA' -out /etc/apache2/certs/{{ key_and_crt }}.crt"
+ 
+   - name: Creating virtualhost for APP
+     template:
+        src: files/app.j2
+        dest: /etc/apache2/sites-available/cloudabm-app-ssl.conf
+
+   - name: Enabling APP site
+     command: a2ensite cloudabm-app-ssl.conf
+
+   - name: Creating virtualhost for Backoffice
+     template:
+        src: files/backoffice.j2
+        dest: /etc/apache2/sites-available/backoffice-ssl.conf
+
+   - name: Enabling BackOffice site
+     command: a2ensite backoffice-ssl.conf
+
+   - name: Enabling SSLEngine
+     command: a2enmod ssl
+  
+   - name: Enabling Rewrite Engine
+     command: a2enmod rewrite
+
+   - name: Creating groups
+     group: name={{ item }} state=present
+     loop:
+       - phpadm
+       - wheel
+
+   - name: Setting access for the groups
+     blockinfile:
+        path: /etc/sudoers
+        insertafter: 'root    ALL=(ALL:ALL) ALL'
+        block: |
+          Cmnd_Alias DEVELOPERS = /bin/su phpadm, /bin/su - phpadm
+          %phpadm ALL=(ALL) DEVELOPERS
+          %wheel  ALL=(ALL:ALL) ALL
+
+   - name: Creating developer users
+     user:
+      name: "{{ item.name }}"
+      state: present
+      shell: /bin/bash
+      comment: "{{ item.comment }}"
+      password: "{{ item.password | string | password_hash('sha512') }}"
+      update_password: on_create
+      create_home: yes
+      groups: "{{ item.groups }}"
+     with_items: "{{ users }}"
+   
+   - name: SSH Settings for svc kuunda account
+     blockinfile:
+      path: /etc/ssh/sshd_config
+      insertafter: Subsystem
+      block: |
+              Match User svc_kuunda
+                X11Forwarding no
+                AllowTcpForwarding no
+                ChrootDirectory %h
+                ForceCommand internal-sftp
+
+   - name: Restart SSH Service
+     service: name=ssh state=reloaded
+   
+   - name: Folder permissions for svc kuunda account
+     shell: |
+        chown -R root /home/svc_kuunda
+        chmod  -R 755 /home/svc_kuunda
+        mkdir -p /home/svc_kuunda/hapacash/loanlimits/export/newfiles
+        mkdir -p /home/svc_kuunda/hapacash/loanlimits/import/newfiles
+        mkdir -p /home/svc_kuunda/hapacash/loanlimits/import/processedfiles
+        mkdir -p /home/svc_kuunda/hapacash/agents
+        chown -R svc_kuunda. /home/svc_kuunda/hapacash
+        chown svc_kuunda.users agents
+        mount --bind /var/www/cloudabm.com/cakephp-2.10.18/app/files/agents /home/svc_kuunda/hapacash/agents
+
+   - name: Install ACL on system
+     package: name=acl state=present
+
+   - name: Creating Cloudabm directory
+     file:
+      path: /var/www/cloudabm.com
+      state: directory
+
+      #  - name: Copying Cake to the respective folder
+      #unarchive:
+      # src: "{{ cakelocation }}"
+      # dest: /var/www/cloudabm.com
+
+      #- name: Copying Back office to the respective folder
+      #unarchive:
+      # src: "{{ backofficelocation }}"
+      #  dest: /var/www/cloudabm.com
+
+   - name: Setting Access control for application
+     shell: |
+      mkdir /var/www/cloudabm.com
+      PRODUCT_DIR=/var/www/cloudabm.com
+      CAKEPHP=cakephp-2.10.18
+      APP=${PRODUCT_DIR}/${CAKEPHP}/app
+      find $PRODUCT_DIR -type d -exec chmod 2775 {} +
+      chown -R phpadm:phpadm $PRODUCT_DIR
+      setfacl -R -m g:phpadm:rwx $PRODUCT_DIR
+      setfacl -R -d -m g:phpadm:rwx $PRODUCT_DIR
+      chmod -R 777 $APP/tmp
+      setfacl -R -m u:www-data:rwx $APP/tmp
+      setfacl -R -d -m u:www-data:rwx $APP/tmp
+
+   - name: Creating directories
+     file:
+      path: /var/www/cloudabm.com/{{ item }}
+      state: directory
+     with_items:
+      - iserv
+      - gserv
+      - gserv2
+      - snode01
+      - snode02
+      - vault
+      - cnode
+
+   - name: Attaching softlinks
+     file:
+      src: /var/www/cloudabm.com/cakephp-2.10.18
+      dest: /var/www/cloudabm.com/{{ item }}/cake
+      state: link
+     with_items:
+      - iserv
+      - gserv
+      - gserv2
+      - snode01
+      - snode02
+      - vault
+      - cnode
+
+   - name: Restart Apache
+     service: name=apache2 state=reloaded
+
+   - name: Changing DB Url in Backoffice
+     command: "find /var/www/cloudabm.com/backoffice/ -name ewcfg.php -exec sed -i 's/1.2.3.4/{{ item.dbip }}/g' {} +"
+     with_items: "{{ db }}"
+
+   - name: Changing DB Url in Application
+     replace:
+      path: /var/www/cloudabm.com/cakephp-2.10.18/app/Config/database.php
+      regexp: 10.95.1.240
+      replace: "{{ item.dbip }}"
+     with_items: "{{ db }}"
+ 
+   - name: Copy sql file to slave
+     copy:
+       src: updatestmts.sql
+       dest: "{{ slavedestination }}"
+
+   - name: Changing URLs in DB
+     command: 'mysql -h {{ item.dbip }} -u 4payapp -p{{ item.dbpass }} -e "source /home/ubuntu/updatestmts.sql"'
+     with_items: "{{ db }}"
+
+   - name: Changing timezone on the system
+     timezone:
+      name: "{{ timezone }}"
+
+   - name: Changing timezone in php
+     lineinfile:
+      path: /etc/php/7.2/cli/php.ini
+      regex: '^;date.timezone ='
+      line: date.timezone = "{{ timezone }}"
+
+   - name: Adding hosts entry
+     lineinfile:
+      path: /etc/hosts
+      insertafter: ff02::3 ip6-allhosts
+      line: "{{ item.line }}"
+     loop:
+      - { line: "{{ ansible_host }} {{ gserv_url }}" }
+      - { line: "{{ ansible_host }} {{ gserv2_url }}" }
+      - { line: "{{ ansible_host }} {{ snode01_url }}" }
+      - { line: "{{ ansible_host }} {{ snode02_url }}" }
+      - { line: "{{ ansible_host }} {{ vault_url }}" }
+      - { line: "{{ ansible_host }} {{ cnode_url }}" }
+      - { line: "{{ ansible_host }} {{ backoffice_url }}" }
+
+   - name: Generating hash
+     shell: "curl -s -X POST -H 'Content-Type: text/xml' -H 'Host: {{ snode01_url }}' -d '<data><ky>{{ partner_key }}</ky></data>' https://{{ host_ip }}/HashGenerator -k | grep -oP '(?<=<body>).*?(?=</body>)'"
+     register: outplay
+
+   - name: Pushing the hash values to a file
+     copy:
+       content: "update 4payintegration.partnerauthentication set partnerexternalid='CHINAKILL', partnerkey='{{ outplay.stdout }}' where partnerid=1"
+       dest: "/home/ubuntu/updatehash.sql"
+
+   - name: Updating hash in the db
+     command: 'mysql -h {{ item.dbip }} -u 4payapp -p{{ item.dbpass }} -e "source /home/ubuntu/updatehash.sql"'
+     with_items: "{{ db }}"
+
+   - name: Sending Email
+     mail:
+       host: smtp.gmail.com
+       port: 587
+       username: bhikesh.khute@4pay.ca
+       password: "{{ email_pass }}"
+       to: Bhikesh Khute <bhikesh.khute@hnrtech.com>
+       subject: Ansible- APP & Backoffice Test Env New1
+       body: "{{ lookup('template','./files/mail_body.html.j2') }}"
+       secure: starttls
+       subtype: html
+       charset: utf8

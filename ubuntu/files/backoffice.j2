@@ -1,0 +1,57 @@
+<VirtualHost *:443>
+
+# General setup for the virtual host, inherited from global configuration
+DocumentRoot "/var/www/cloudabm.com/backoffice/"
+ServerName {{ backoffice_url }}:443
+ServerAdmin admin@4pay.ca
+
+#<Directory "/var/www/cloudabm.com/adminportal">
+<Directory "/var/www/cloudabm.com/backoffice">
+    SSLOptions +StdEnvVars
+    Options -Indexes +FollowSymLinks +Includes +ExecCGI
+    AllowOverride All
+    Require all granted
+    <LimitExcept GET POST>
+        Require all denied
+    </LimitExcept>
+</Directory>
+
+# Use separate log files for the SSL virtual host; note that LogLevel
+# is not inherited from httpd.conf.
+ErrorLog ${APACHE_LOG_DIR}/portal-cloudabm_ssl_error_log
+TransferLog ${APACHE_LOG_DIR}/portal-cloudabm_ssl_access_log
+LogLevel warn
+
+#   SSL Engine Switch:
+#   Enable/Disable SSL for this virtual host.
+SSLEngine on
+
+#   Server Certificate:
+SSLCertificateFile "{{ crt_path }}"
+
+#   Server Private Key:
+SSLCertificateKeyFile "{{ key_path }}"
+
+#   Server Certificate Chain:
+#SSLCertificateChainFile "/etc/apache2/certs/gd_bundle-g2-g1.crt"
+
+#   SSL Engine Options:
+<Files ~ "\.(cgi|shtml|phtml|php3?)$">
+    SSLOptions +StdEnvVars
+</Files>
+<Directory "/var/www/cgi-bin">
+    SSLOptions +StdEnvVars
+</Directory>
+
+#   SSL Protocol Adjustments:
+BrowserMatch "MSIE [2-5]" \
+         nokeepalive ssl-unclean-shutdown \
+         downgrade-1.0 force-response-1.0
+
+#   Per-Server Logging:
+#   The home of a custom SSL log file. Use this when you want a
+#   compact non-error SSL logfile on a virtual host basis.
+CustomLog ${APACHE_LOG_DIR}/portal-cloudabm_ssl_request_log \
+          "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+
+</VirtualHost>
