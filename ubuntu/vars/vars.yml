@@ -1,6 +1,6 @@
-client: Singham 7
-varlocation: /home/ubuntu/APP_BACKOFFICE/ubuntu/vars/vars.yml
-fileslocation: /home/ubuntu/APP_BACKOFFICE/ubuntu/files
+client: 
+varlocation: 
+fileslocation: 
 cakelocation: /home/ubuntu/cake.tar.gz
 backofficelocation: /home/ubuntu/backoffice.tar.gz
 slavedestination: /home/ubuntu
@@ -16,7 +16,7 @@ key_path: /etc/apache2/certs/floor.low.key
 crt_path: /etc/apache2/certs/floor.low.crt
 backoffice_url: portal.floor.low
 timezone: Asia/Qatar
-email_pass: elevtywhswobrpoe
+email_pass: 
 db:
    - dbip: 3.99.219.101
      dbpass: falcon^321
