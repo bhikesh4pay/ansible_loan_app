@@ -133,7 +133,25 @@
 
    - name: Restart SSH Service
      service: name=ssh state=reloaded
-   
+  
+   - name: Install ACL on system
+     package: name=acl state=present
+
+   - name: Creating Cloudabm directory
+     file:
+      path: /var/www/cloudabm.com
+      state: directory
+
+   - name: Copying Cake to the respective folder
+     unarchive:
+        src: "{{ cakelocation }}"
+        dest: /var/www/cloudabm.com
+
+   - name: Copying Back office to the respective folder
+     unarchive:
+        src: "{{ backofficelocation }}"
+        dest: /var/www/cloudabm.com
+
    - name: Folder permissions for svc kuunda account
      shell: |
         chown -R root /home/svc_kuunda
@@ -145,24 +163,6 @@
         chown -R svc_kuunda. /home/svc_kuunda/hapacash
         chown svc_kuunda.users agents
         mount --bind /var/www/cloudabm.com/cakephp-2.10.18/app/files/agents /home/svc_kuunda/hapacash/agents
-
-   - name: Install ACL on system
-     package: name=acl state=present
-
-   - name: Creating Cloudabm directory
-     file:
-      path: /var/www/cloudabm.com
-      state: directory
-
-      #  - name: Copying Cake to the respective folder
-      #unarchive:
-      # src: "{{ cakelocation }}"
-      # dest: /var/www/cloudabm.com
-
-      #- name: Copying Back office to the respective folder
-      #unarchive:
-      # src: "{{ backofficelocation }}"
-      #  dest: /var/www/cloudabm.com
 
    - name: Setting Access control for application
      shell: |
