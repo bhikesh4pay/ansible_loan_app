@@ -108,9 +108,24 @@
 
    - name: Restart SSH Service
      service: name=sshd state=reloaded
+   
+   - name: Creating Cloudabm directory
+     file:
+      path: /var/www/cloudabm.com
+      state: directory
 
-   - name: Folder permissions for svc kuunda account
-     shell: |
+  - name: Copying Cake to the respective folder
+    unarchive:
+      src: "{{ cakelocation }}"
+      dest: /var/www/cloudabm.com
+
+  - name: Copying Back office to the respective folder
+    unarchive:
+      src: "backofficelocation"
+      dest: /var/www/cloudabm.com
+
+  - name: Folder permissions for svc kuunda account
+    shell: |
         chown -R root /home/svc_kuunda
         chmod  -R 755 /home/svc_kuunda
         mkdir -p /home/svc_kuunda/hapacash/loanlimits/export/newfiles
@@ -120,22 +135,6 @@
         chown -R svc_kuunda. /home/svc_kuunda/hapacash
         chown svc_kuunda.users agents
         mount --bind /var/www/cloudabm.com/cakephp-2.10.18/app/files/agents /home/svc_kuunda/hapacash/agents
-
-   
-   - name: Creating Cloudabm directory
-     file:
-      path: /var/www/cloudabm.com
-      state: directory
-
-#   - name: Copying Cake to the respective folder
- #    unarchive:
- #      src: "{{ cakelocation }}"
-  #     dest: /var/www/cloudabm.com
-
-   #- name: Copying Back office to the respective folder
-     #unarchive:
-    #   src: "backofficelocation"
-     #  dest: /var/www/cloudabm.com
 
    - name: Setting Access control for application
      shell: |
