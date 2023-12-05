@@ -16,9 +16,9 @@ cat $vars_path
 echo "------------------------------------------------------------------------------------------"
 cat $updatestmts
 echo "------------------------------------------------------------------------------------------"
-svckuunda=$(openssl rand -base64 14)
+svckuunda=$(openssl rand -base64 14 | tr -d '/+' | cut -c1-)
 sed -i "s/djdDNDHSCziXwaNa8L4=/$svckuunda/g" $vars_path
 echo "Password for svc_kuunda is:" $svckuunda
-partnerkey=$(openssl rand -base64 14)
+partnerkey=$(openssl rand -base64 14 | tr -d '/+' | cut -c1-)
 sed -i "s/RBXtu6RflQ5HFMgu15Q=/$partnerkey/g" $vars_path
 echo "Password for Partnerkey is:" $partnerkey
