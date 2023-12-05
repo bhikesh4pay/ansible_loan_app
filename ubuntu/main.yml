@@ -68,8 +68,16 @@
         src: files/app.j2
         dest: /etc/apache2/sites-available/cloudabm-app-ssl.conf
 
+   - name: Creating virtualhost for INT
+     template:
+        src: files/int.j2
+        dest: /etc/apache2/sites-available/cloudabm-int-ssl.conf
+
    - name: Enabling APP site
      command: a2ensite cloudabm-app-ssl.conf
+
+   - name: Enabling INT site
+     command: a2ensite cloudabm-int-ssl.conf
 
    - name: Creating virtualhost for Backoffice
      template:
