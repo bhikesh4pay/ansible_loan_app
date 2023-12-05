@@ -22,7 +22,7 @@ useradd -c "FTP User" -s /bin/bash -m -p $(echo bhikesh | openssl passwd -1 -std
 
 sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
 
-sed '0,/127.0.0.1/s/127.0.0.1/0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
+sed -i '0,/127.0.0.1/s/127.0.0.1/0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
 
 systemctl restart sshd
 
