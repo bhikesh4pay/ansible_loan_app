@@ -66,11 +66,6 @@ users:
     shell: /sbin/nologin
     password: djdDNDHSCziXwaNa8L4=
 
-  - name: phpadm
-    comment: PHP ADM
-    groups: sudo,phpadm,users
-    shell: /sbin/nologin
-
 partner_key: RBXtu6RflQ5HFMgu15Q=
 
 host_ip: 3.99.219.101         
