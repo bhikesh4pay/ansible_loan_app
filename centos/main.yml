@@ -94,6 +94,15 @@
       groups: "{{ item.groups }}"
      with_items: "{{ users }}"
 
+   - name: Adding no login user-PHPADM
+     user:
+      name: phpadm
+      groups: phpadm
+      shell: /sbin/nologin
+      create_home: yes
+      append: yes
+      comment: "PHP ADM"
+      state: present
 
    - name: SSH Settings for svc kuunda account
      blockinfile:
