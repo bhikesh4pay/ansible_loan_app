@@ -58,6 +58,11 @@
         src: files/app.j2
         dest: /etc/httpd/conf.d/cloudabm-app-ssl.conf
 
+   - name: Creating virtualhost for INT
+     template:
+        src: files/int.j2
+        dest: /etc/httpd/conf.d/cloudabm-int-ssl.conf
+
    - name: Creating virtualhost for Backoffice
      template:
         src: files/backoffice.j2
