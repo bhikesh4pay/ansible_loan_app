@@ -1,4 +1,4 @@
-- hosts: slave
+- hosts: 
   become: yes
   vars_files:
     - vars/vars.yml
