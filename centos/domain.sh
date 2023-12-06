@@ -1,7 +1,7 @@
 #/bin/bash
 
-vars_path=/home/ubuntu/APP_BACKOFFICE/ubuntu/vars/vars.yml
-updatestmts=/home/ubuntu/APP_BACKOFFICE/ubuntu/files/updatestmts.sql
+vars_path=$PWD/vars/vars.yml
+updatestmts=$PWD/files/updatestmts.sql
 echo "This is configuration script"
 echo "Enter the domain name to be configured here"
 read dname
