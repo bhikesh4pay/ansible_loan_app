@@ -15,7 +15,7 @@ sed -i "s/floor.low/$dname/g" $vars_path
 sed -i "s/floor.low/$dname/g" $updatestmts
 sed -i "s/3.99.219.101/$dbip/g" $vars_path
 sed -i "s/epass/$epass/g" $vars_path
-sed -i "s/client/$client/g" $vars_path
+sed -i "s/clientname/$client/g" $vars_path
 echo "Changes Completed!"
 echo "------------------------------------------------------------------------------------------"
 cat $vars_path
