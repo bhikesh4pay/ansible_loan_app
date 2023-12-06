@@ -38,12 +38,12 @@
        
    - name: Copy IonCube to PHP Directory
      copy:
-      src: "{{ fileslocation }}/ioncube_loader_lin_7.2.so"
+      src: files/ioncube_loader_lin_7.2.so
       dest: /usr/lib/php/20170718
 
    - name: Copying ion config file to PHP Directory
      copy:
-      src: "{{ fileslocation }}/00-ioncube.ini"
+      src: files/00-ioncube.ini
       dest: /etc/php/7.2/cli/conf.d/
 
    - name: Verifiying PHP version
