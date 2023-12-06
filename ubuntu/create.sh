@@ -1,15 +1,21 @@
 #/bin/bash
 
 vars_path=$PWD/vars/vars.yml
-updatestmts=$PWD/updatestmts.sql
+updatestmts=$PWD/files/updatestmts.sql
 echo "This is configuration script"
 echo "Enter the domain name to be configured here"
 read dname
 echo "Enter the Database IP Address"
 read dbip
+echo "Enter the email pass"
+read epass
+echo "Enter client name"
+read client
 sed -i "s/floor.low/$dname/g" $vars_path
 sed -i "s/floor.low/$dname/g" $updatestmts
 sed -i "s/3.99.219.101/$dbip/g" $vars_path
+sed -i "s/epass/$epass/g" $vars_path
+sed -i "s/client/$client/g" $vars_path
 echo "Changes Completed!"
 echo "------------------------------------------------------------------------------------------"
 cat $vars_path
