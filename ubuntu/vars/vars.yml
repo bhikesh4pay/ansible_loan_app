@@ -1,6 +1,6 @@
 client: 
-varlocation: 
-fileslocation: 
+varlocation: xx
+fileslocation: yy
 cakelocation: /home/ubuntu/cake.tar.gz
 backofficelocation: /home/ubuntu/backoffice.tar.gz
 slavedestination: /home/ubuntu
