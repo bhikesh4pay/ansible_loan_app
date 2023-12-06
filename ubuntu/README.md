@@ -26,4 +26,4 @@ sed -i '0,/127.0.0.1/s/127.0.0.1/0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
 
 systemctl restart sshd
 
-systemtl restart mysql
+systemctl restart mysql
