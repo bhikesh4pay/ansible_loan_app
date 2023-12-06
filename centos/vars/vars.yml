@@ -1,6 +1,4 @@
 client: 
-varlocation: 
-fileslocation: 
 cakelocation: /home/ubuntu/cake.tar.gz
 backofficelocation: /home/ubuntu/backoffice.tar.gz
 slavedestination: /home/centos
