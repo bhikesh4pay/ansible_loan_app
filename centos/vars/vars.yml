@@ -14,7 +14,7 @@ key_path: /etc/httpd/certs/floor.low.key
 crt_path: /etc/httpd/certs/floor.low.crt
 backoffice_url: portal.floor.low
 timezone: Asia/Qatar
-email_pass: epass
+email_pass: emailpass
 db:
    - dbip: 3.99.219.101
      dbpass: falcon^321
