@@ -4,6 +4,9 @@
    - vars/vars.yml
 
   tasks:
+   - name: Dsiable Native Apache
+     package: name=httpd24-httpd state=absent
+
    - name: Install Apache
      package: name=httpd state=present
 
