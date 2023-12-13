@@ -1,6 +1,6 @@
 client: clientname
-cakelocation: /home/ubuntu/cake.tar.gz
-backofficelocation: /home/ubuntu/backoffice.tar.gz
+cakelocation: ../coreapp/cake.tar.gz
+backofficelocation: ../coreapp/backoffice.tar.gz
 slavedestination: /home/ubuntu
 gserv_url: gserv.floor.low
 gserv2_url: gserv2.floor.low
